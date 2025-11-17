@@ -40,17 +40,15 @@ const agent = createAgent({
 
 const chatWithAgent = async (message: string): Promise<any> => {
   try {
-    const response = await agent.invoke({
-      messages: [
-        { role: "user", content: `where is ${message}?` },
-      ],
+    const stream = await agent.stream({
+      messages: [{ role: "user", content: `where is ${message}?` }],
     });
-
-    return response;
+    for await (const chunk of stream) {
+      console.log("chunk:",chunk);
+    }
   } catch (error) {
     throw error;
   }
 };
 
-const text = await chatWithAgent("what is langchain");
-console.log("🚀 ~ text:", text);
+await chatWithAgent("what is langchain");
