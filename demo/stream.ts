@@ -1,4 +1,4 @@
-import { createAgent, tool } from "langchain";
+import { AIMessageChunk, createAgent, tool } from "langchain";
 import { ChatOpenAI } from "@langchain/openai";
 import dotenv from "dotenv";
 dotenv.config();
@@ -43,8 +43,10 @@ const chatWithAgent = async (message: string): Promise<any> => {
     const stream = await agent.stream({
       messages: [{ role: "user", content: `where is ${message}?` }],
     });
+    let full: AIMessageChunk | null = null;
     for await (const chunk of stream) {
-      console.log("chunk:",chunk);
+      console.log("full", full)
+      full = full ? full.concat(chunk) : chunk;
     }
   } catch (error) {
     throw error;
