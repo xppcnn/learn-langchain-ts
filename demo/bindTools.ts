@@ -57,5 +57,5 @@ for (const tool_call of ai_msg.tool_calls!) {
 
 // Step 3: Pass results back to model for final response
 const final_response = await modelWithTools.invoke(messages);
-console.log("🚀 ~ final_response:", final_response);
+console.log("🚀 ~ final_response:", typeof final_response);
 console.log(final_response.text);

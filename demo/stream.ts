@@ -35,19 +35,18 @@ const search = tool((query) => `Results for: ${query}`, {
 
 const agent = createAgent({
   model: chatModel,
-  tools: [search, getWeather],
+  tools: [getWeather],
 });
 
 const chatWithAgent = async (message: string): Promise<any> => {
   try {
-    const stream = await agent.stream({
-      messages: [{ role: "user", content: `where is ${message}?` }],
-    });
-    let full: AIMessageChunk | null = null;
-    for await (const chunk of stream) {
-      console.log("full", full)
-      full = full ? full.concat(chunk) : chunk;
-    }
+      const streamIterator = await agent.stream(
+        { messages: [{ role: "user", content: "what is the weather in sf" }] },
+        { streamMode: "updates" }
+      );
+      for await (const stream of streamIterator) {
+        console.log(stream);
+      }
   } catch (error) {
     throw error;
   }

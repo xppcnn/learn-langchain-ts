@@ -10,19 +10,34 @@ importers:
     dependencies:
       '@langchain/community':
         specifier: ^1.0.3
-        version: 1.0.3(@browserbasehq/sdk@2.6.0)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.56.1)(deepmerge@4.3.1)(dotenv@17.2.3)(openai@6.9.0(ws@8.18.3)(zod@4.1.12))(zod@4.1.12))(@ibm-cloud/watsonx-ai@1.7.3)(@langchain/core@1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12)))(ibm-cloud-sdk-core@5.4.4)(jsonwebtoken@9.0.2)(openai@6.9.0(ws@8.18.3)(zod@4.1.12))(playwright@1.56.1)(ws@8.18.3)
+        version: 1.0.3(@browserbasehq/sdk@2.6.0)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.56.1)(deepmerge@4.3.1)(dotenv@17.2.3)(openai@6.9.0(ws@8.18.3)(zod@4.1.12))(zod@4.1.12))(@ibm-cloud/watsonx-ai@1.7.3)(@langchain/core@1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12)))(chromadb@3.1.5)(ibm-cloud-sdk-core@5.4.4)(jsonwebtoken@9.0.2)(openai@6.9.0(ws@8.18.3)(zod@4.1.12))(pdf-parse@1.1.4)(playwright@1.56.1)(ws@8.18.3)
       '@langchain/core':
         specifier: ^1.0.5
         version: 1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12))
+      '@langchain/google-genai':
+        specifier: ^1.0.3
+        version: 1.0.3(@langchain/core@1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12)))
+      '@langchain/langgraph':
+        specifier: ^1.0.2
+        version: 1.0.2(@langchain/core@1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12)))(zod-to-json-schema@3.24.6(zod@4.1.12))(zod@4.1.12)
       '@langchain/openai':
         specifier: ^1.1.1
         version: 1.1.1(@langchain/core@1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12)))(ws@8.18.3)
+      '@langchain/textsplitters':
+        specifier: ^1.0.0
+        version: 1.0.0(@langchain/core@1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12)))
+      chromadb:
+        specifier: ^3.1.5
+        version: 3.1.5
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
       langchain:
         specifier: ^1.0.4
         version: 1.0.4(@langchain/core@1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12)))(openai@6.9.0(ws@8.18.3)(zod@4.1.12))(zod-to-json-schema@3.24.6(zod@4.1.12))
+      pdf-parse:
+        specifier: ^1.1.4
+        version: 1.1.4
       zod:
         specifier: ^4.1.12
         version: 4.1.12
@@ -209,6 +224,10 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@google/generative-ai@0.24.1':
+    resolution: {integrity: sha512-MqO+MLfM6kjxcKoy0p1wRzG3b4ZZXtPI+z2IE26UogS2Cm/XHO+7gGRBh6gcJsOiIVoH93UwKvW4HdgiOZCy9Q==}
+    engines: {node: '>=18.0.0'}
 
   '@ibm-cloud/watsonx-ai@1.7.3':
     resolution: {integrity: sha512-059l3Rs+FLZTfxIPVUiKLasEC0lkXyTo5HJBwzI1eFZUNjBdJW9BevPB7I5+6msSLoLy7Zbin4W9YarqOydvWg==}
@@ -596,6 +615,12 @@ packages:
     resolution: {integrity: sha512-9Hy/b9+j+mm0Bhnm8xD9B0KpBYTidroLrDHdbrHoMC2DqXoY2umvi1M3M/9D744qsMSaIMP0ZwFcy5YbqI/dGw==}
     engines: {node: '>=20'}
 
+  '@langchain/google-genai@1.0.3':
+    resolution: {integrity: sha512-ZN3f6SPFZI3FMjJ1C0y5A/lWlZ/x+A9RoIKg1PNYdX6bEu7/BR7oz0dYYI2+YGl3TRp1u75e3SzzL0MxmfWfDA==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@langchain/core': 1.0.6
+
   '@langchain/langgraph-checkpoint@1.0.0':
     resolution: {integrity: sha512-xrclBGvNCXDmi0Nz28t3vjpxSH6UYx6w5XAXSiiB1WEdc2xD2iY/a913I3x3a31XpInUW/GGfXXfePfaghV54A==}
     engines: {node: '>=18'}
@@ -720,6 +745,41 @@ packages:
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
+
+  chromadb-js-bindings-darwin-arm64@1.1.1:
+    resolution: {integrity: sha512-/3s22U1OdxgpM8eBwCNPC5NO5s7hk4b4PLLp8y+FLfqU0CTqXfRi3uBPNAO2fQCmhOcMC6e7djT0Un4sFaYynA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+
+  chromadb-js-bindings-darwin-x64@1.1.1:
+    resolution: {integrity: sha512-2DYK5Ho1RjdPN4vXcdSO3u3/uU5L2RbpFuZ2/QvJYkGb2fLBecqA5YWUh9hOmu+HSWcKuFDi4fRuYj59irgQCg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+
+  chromadb-js-bindings-linux-arm64-gnu@1.1.1:
+    resolution: {integrity: sha512-XkSEgJWbSN+grOpUy0LVoEHzhX3FiBDrxVHrWiEW4RqkMLfzUQMEfE/Qw78wSkfuIuIESxMYeh5PVjtBVv+8/g==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  chromadb-js-bindings-linux-x64-gnu@1.1.1:
+    resolution: {integrity: sha512-RcvBcECbUcFXlFM2httdGc+3wmkI76tD9iGS0H9npEhz4LyLvdXKBK8CZtw67hsHCH09KklKw4ITkSS85pHVbA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  chromadb-js-bindings-win32-x64-msvc@1.1.1:
+    resolution: {integrity: sha512-296SxWNwsmvP+1Ggkl72norTFLOivoXhGu0t5mXNIbd7yd2UodntvAvG2cheTHDCL/ILbox4u+6KHNvRxHgm6A==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+
+  chromadb@3.1.5:
+    resolution: {integrity: sha512-RQwXThjJXB0JPOfaVYSG7o9LIVZs5ds7h4vOmrpeLQ1C87y25PEJAtOgcAtTU7ObI5Yq2l1lx/Wng3vVyRtV4A==}
+    engines: {node: '>=20'}
+    hasBin: true
 
   color-convert@2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
@@ -994,6 +1054,9 @@ packages:
     engines: {node: '>=10.5.0'}
     deprecated: Use your platform's native DOMException instead
 
+  node-ensure@0.0.0:
+    resolution: {integrity: sha512-DRI60hzo2oKN1ma0ckc6nQWlHU69RH6xN0sjQTjMpChPfTYvKZdcQFfdYK2RWbJcKyUizSIy/l8OTGxMAM1QDw==}
+
   node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
     engines: {node: 4.x || >=6.0.0}
@@ -1033,6 +1096,10 @@ packages:
   p-timeout@3.2.0:
     resolution: {integrity: sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==}
     engines: {node: '>=8'}
+
+  pdf-parse@1.1.4:
+    resolution: {integrity: sha512-XRIRcLgk6ZnUbsHsYXExMw+krrPE81hJ6FQPLdBNhhBefqIQKXu/WeTgNBGSwPrfU0v+UCEwn7AoAUOsVKHFvQ==}
+    engines: {node: '>=6.8.1'}
 
   peek-readable@4.1.0:
     resolution: {integrity: sha512-ZI3LnwUv5nOGbQzD9c2iDG6toheuXSZP5esSHBjopsXH4dg19soufvpUGA3uohi5anFtGb2lhAVdHzH6R/Evvg==}
@@ -1151,6 +1218,10 @@ packages:
 
   uuid@10.0.0:
     resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    hasBin: true
+
+  uuid@11.1.0:
+    resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
     hasBin: true
 
   uuid@9.0.1:
@@ -1317,6 +1388,8 @@ snapshots:
   '@esbuild/win32-x64@0.25.12':
     optional: true
 
+  '@google/generative-ai@0.24.1': {}
+
   '@ibm-cloud/watsonx-ai@1.7.3':
     dependencies:
       '@types/node': 18.19.130
@@ -1348,7 +1421,7 @@ snapshots:
       - openai
       - ws
 
-  '@langchain/community@1.0.3(@browserbasehq/sdk@2.6.0)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.56.1)(deepmerge@4.3.1)(dotenv@17.2.3)(openai@6.9.0(ws@8.18.3)(zod@4.1.12))(zod@4.1.12))(@ibm-cloud/watsonx-ai@1.7.3)(@langchain/core@1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12)))(ibm-cloud-sdk-core@5.4.4)(jsonwebtoken@9.0.2)(openai@6.9.0(ws@8.18.3)(zod@4.1.12))(playwright@1.56.1)(ws@8.18.3)':
+  '@langchain/community@1.0.3(@browserbasehq/sdk@2.6.0)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.56.1)(deepmerge@4.3.1)(dotenv@17.2.3)(openai@6.9.0(ws@8.18.3)(zod@4.1.12))(zod@4.1.12))(@ibm-cloud/watsonx-ai@1.7.3)(@langchain/core@1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12)))(chromadb@3.1.5)(ibm-cloud-sdk-core@5.4.4)(jsonwebtoken@9.0.2)(openai@6.9.0(ws@8.18.3)(zod@4.1.12))(pdf-parse@1.1.4)(playwright@1.56.1)(ws@8.18.3)':
     dependencies:
       '@browserbasehq/stagehand': 1.14.0(@playwright/test@1.56.1)(deepmerge@4.3.1)(dotenv@17.2.3)(openai@6.9.0(ws@8.18.3)(zod@4.1.12))(zod@4.1.12)
       '@ibm-cloud/watsonx-ai': 1.7.3
@@ -1365,7 +1438,9 @@ snapshots:
       zod: 4.1.12
     optionalDependencies:
       '@browserbasehq/sdk': 2.6.0
+      chromadb: 3.1.5
       jsonwebtoken: 9.0.2
+      pdf-parse: 1.1.4
       playwright: 1.56.1
       ws: 8.18.3
     transitivePeerDependencies:
@@ -1392,6 +1467,12 @@ snapshots:
       - '@opentelemetry/exporter-trace-otlp-proto'
       - '@opentelemetry/sdk-trace-base'
       - openai
+
+  '@langchain/google-genai@1.0.3(@langchain/core@1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12)))':
+    dependencies:
+      '@google/generative-ai': 0.24.1
+      '@langchain/core': 1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12))
+      uuid: 11.1.0
 
   '@langchain/langgraph-checkpoint@1.0.0(@langchain/core@1.0.5(openai@6.9.0(ws@8.18.3)(zod@4.1.12)))':
     dependencies:
@@ -1512,6 +1593,31 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+
+  chromadb-js-bindings-darwin-arm64@1.1.1:
+    optional: true
+
+  chromadb-js-bindings-darwin-x64@1.1.1:
+    optional: true
+
+  chromadb-js-bindings-linux-arm64-gnu@1.1.1:
+    optional: true
+
+  chromadb-js-bindings-linux-x64-gnu@1.1.1:
+    optional: true
+
+  chromadb-js-bindings-win32-x64-msvc@1.1.1:
+    optional: true
+
+  chromadb@3.1.5:
+    dependencies:
+      semver: 7.7.3
+    optionalDependencies:
+      chromadb-js-bindings-darwin-arm64: 1.1.1
+      chromadb-js-bindings-darwin-x64: 1.1.1
+      chromadb-js-bindings-linux-arm64-gnu: 1.1.1
+      chromadb-js-bindings-linux-x64-gnu: 1.1.1
+      chromadb-js-bindings-win32-x64-msvc: 1.1.1
 
   color-convert@2.0.1:
     dependencies:
@@ -1808,6 +1914,8 @@ snapshots:
 
   node-domexception@1.0.0: {}
 
+  node-ensure@0.0.0: {}
+
   node-fetch@2.7.0:
     dependencies:
       whatwg-url: 5.0.0
@@ -1834,6 +1942,10 @@ snapshots:
   p-timeout@3.2.0:
     dependencies:
       p-finally: 1.0.0
+
+  pdf-parse@1.1.4:
+    dependencies:
+      node-ensure: 0.0.0
 
   peek-readable@4.1.0: {}
 
@@ -1936,6 +2048,8 @@ snapshots:
       requires-port: 1.0.0
 
   uuid@10.0.0: {}
+
+  uuid@11.1.0: {}
 
   uuid@9.0.1: {}
 
