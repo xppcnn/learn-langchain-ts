@@ -1,4 +1,3 @@
-import { ChromaClient } from "chromadb";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { OpenAI, OpenAIEmbeddings } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
