@@ -102,9 +102,7 @@ const calendarAgent = createAgent({
 // });
 
 // for await (const step of stream) {
-//   console.log("🚀 ~ step:", step);
 //   for (const update of Object.values(step)) {
-//     console.log("🚀 ~ update:", update);
 //     if (update && typeof update === "object" && "messages" in update) {
 //       for (const message of update.messages) {
 //         console.log(message.toFormattedString());
@@ -152,21 +150,21 @@ const emailQuery = "给设计团队发送一条提醒，让他们审查新的样
 // }
 const config = { configurable: { thread_id: "6" } };
 const scheduleEvent = tool(
-  async (request: string) => {
-    console.log("🚀 ~ request:", request)
+  async ({ request }, config) => {
+    // 将额外的会话上下文传递给子代理
     const currentMessages = getCurrentTaskInput<BuiltInState>(config).messages;
     const originalUserMessage = currentMessages.find(HumanMessage.isInstance);
     const prompt = `
     您正在协助处理以下用户咨询:
 
-    ${originalUserMessage?.content || "No context available"}
+    ${originalUserMessage?.content || "没有上下文变量"}
 
     你被分配以下子任务:
 
     ${request}
         `.trim();
     const result = await calendarAgent.invoke({
-      messages: [new HumanMessage(prompt)],
+      messages: [{ role: "user", content: prompt }],
     });
     const lastMessage = result.messages[result.messages.length - 1];
     return lastMessage.text;
@@ -186,9 +184,22 @@ const scheduleEvent = tool(
 );
 
 const manageEmail = tool(
-  async (request: string) => {
+  async ({ request }, config) => {
+    const currentMessages = getCurrentTaskInput<BuiltInState>(config).messages;
+
+    const originalUserMessage = currentMessages.find(HumanMessage.isInstance);
+
+    const prompt = `
+您正在协助处理以下用户咨询:
+
+${originalUserMessage?.content || "没有上下文变量"}
+
+你被分配以下子任务:
+
+${request}
+    `.trim();
     const result = await emailAgent.invoke({
-      messages: [new HumanMessage(request)],
+      messages: [{ role: "user", content: prompt }],
     });
     const lastMessage = result.messages[result.messages.length - 1];
     return lastMessage.text;
@@ -238,21 +249,6 @@ const complexQuery = `
     下个星期二下午两点和设计团队约一个会议，时长一个小时。同时需要发送一个邮件进行提醒。参会人有alice@example.com，bob@example.com
 `.trim();
 
-const resume: Record<string, any> = {};
-
-for (const interrupt of interrupts) {
-  const actionRequest = interrupt.value.actionRequests[0];
-  if (actionRequest.name === "send_email") {
-    const editedAction = { ...actionRequest };
-    editedAction.arguments.subject = "测试邮件";
-    resume[interrupt.id] = {
-      decisions: [{ type: "edit", editedAction }],
-    };
-  } else {
-    resume[interrupt.id] = { decisions: [{ type: "approve" }] };
-  }
-}
-
 const complexStream = await supervisorAgent.stream(
   {
     messages: [{ role: "user", content: complexQuery }],
@@ -274,16 +270,35 @@ for await (const step of complexStream) {
   }
 }
 
-const resumeStream = await supervisorAgent.stream(
-  new Command({ resume }),
-  config
-);
+// Only create resume if there are interrupts to handle
+if (interrupts.length > 0) {
+  const resume: Record<string, any> = {};
 
-for await (const step of resumeStream) {
-  for (const update of Object.values(step)) {
-    if (update && typeof update === "object" && "messages" in update) {
-      for (const message of update.messages) {
-        console.log(message.toFormattedString());
+  for (const interrupt of interrupts) {
+    const actionRequest = interrupt.value.actionRequests[0];
+    if (actionRequest.name === "send_email") {
+      const editedAction = { ...actionRequest };
+      console.log("🚀 ~ editedAction:", editedAction)
+      editedAction.args.subject = "测试邮件";
+      resume[interrupt.id] = {
+        decisions: [{ type: "edit", editedAction }],
+      };
+    } else {
+      resume[interrupt.id] = { decisions: [{ type: "approve" }] };
+    }
+  }
+
+  const resumeStream = await supervisorAgent.stream(
+    new Command({ resume }),
+    config
+  );
+
+  for await (const step of resumeStream) {
+    for (const update of Object.values(step)) {
+      if (update && typeof update === "object" && "messages" in update) {
+        for (const message of update.messages) {
+          console.log(message.toFormattedString());
+        }
       }
     }
   }
