@@ -15,6 +15,8 @@ import {
   getCurrentTaskInput,
   MemorySaver,
 } from "@langchain/langgraph";
+import * as readline from "node:readline/promises";
+import { stdin as input, stdout as output } from "node:process";
 
 const chatModel = new ChatOpenAI({
   modelName: process.env.OPENROUTER_MODEL,
@@ -278,10 +280,20 @@ if (interrupts.length > 0) {
     const actionRequest = interrupt.value.actionRequests[0];
     if (actionRequest.name === "send_email") {
       const editedAction = { ...actionRequest };
-      console.log("🚀 ~ editedAction:", editedAction)
-      editedAction.args.subject = "测试邮件";
+      const rl = readline.createInterface({ input, output });
+      const userInput = await rl.question(
+        "请输入你的决定(approve / reject /edit):"
+      );
+      if (["edit"].includes(userInput)) {
+        const editInput = await rl.question(
+          "请输入你要编辑的内容"
+        );
+        editedAction.args.subject = editInput;
+      }
+      rl.close()
+      console.log(editedAction)
       resume[interrupt.id] = {
-        decisions: [{ type: "edit", editedAction }],
+        decisions: [{ type: userInput, editedAction }],
       };
     } else {
       resume[interrupt.id] = { decisions: [{ type: "approve" }] };
